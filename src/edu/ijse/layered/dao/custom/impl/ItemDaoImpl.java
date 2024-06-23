@@ -4,6 +4,7 @@
  */
 package edu.ijse.layered.dao.custom.impl;
 
+import edu.ijse.layered.dao.CrudUtil;
 import edu.ijse.layered.dao.custom.ItemDao;
 import edu.ijse.layered.eneity.ItemEntity;
 import java.util.ArrayList;
@@ -12,31 +13,34 @@ import java.util.ArrayList;
  *
  * @author anjan
  */
-public class ItemDaoImpl implements ItemDao{
+public class ItemDaoImpl implements ItemDao {
 
     @Override
     public String save(ItemEntity entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        boolean isSaved = CrudUtil.executeUpdate("INSERT INTO item VALUES(?,?,?,?,?)", 
+                entity.getItemCode(), entity.getDescription(), entity.getPackSize(),
+                entity.getUnitPrice(), entity.getQoh());
+        return isSaved ? "Success" : "Fail";
     }
 
     @Override
     public String update(ItemEntity entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return null;
     }
 
     @Override
     public String delete(String code) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return null;
     }
 
     @Override
     public String gItemEntityet(String code) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return null;
     }
 
     @Override
     public ArrayList<ItemEntity> getAll() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return null;
     }
-    
+
 }
