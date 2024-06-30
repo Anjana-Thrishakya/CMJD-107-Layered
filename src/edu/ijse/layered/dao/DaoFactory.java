@@ -7,26 +7,27 @@ package edu.ijse.layered.dao;
 import edu.ijse.layered.dao.custom.impl.CustomerDaoImpl;
 import edu.ijse.layered.dao.custom.impl.ItemDaoImpl;
 import edu.ijse.layered.dao.custom.impl.OrderDaoImpl;
+import edu.ijse.layered.dao.custom.impl.OrderDetailDaoImpl;
 
 /**
  *
  * @author anjan
  */
 public class DaoFactory {
-    
+
     private static DaoFactory daoFactory;
 
     private DaoFactory() {
     }
-    
-    public static DaoFactory getInstance(){
-        if(daoFactory == null){
+
+    public static DaoFactory getInstance() {
+        if (daoFactory == null) {
             daoFactory = new DaoFactory();
         }
         return daoFactory;
     }
-    
-    public SuperDAO getDao(DaoTypes type){
+
+    public SuperDAO getDao(DaoTypes type) {
         switch (type) {
             case ITEM:
                 return new ItemDaoImpl();
@@ -34,12 +35,14 @@ public class DaoFactory {
                 return new CustomerDaoImpl();
             case ORDER:
                 return new OrderDaoImpl();
+            case ORDER_DETAIL:
+                return new OrderDetailDaoImpl();
             default:
                 return null;
         }
     }
-    
-    public enum DaoTypes{
-        ITEM, CUSTOMER, ORDER
+
+    public enum DaoTypes {
+        ITEM, CUSTOMER, ORDER, ORDER_DETAIL
     }
 }
