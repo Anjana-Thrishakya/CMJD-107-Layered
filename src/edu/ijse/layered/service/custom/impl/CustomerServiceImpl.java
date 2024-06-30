@@ -4,6 +4,8 @@
  */
 package edu.ijse.layered.service.custom.impl;
 
+import edu.ijse.layered.dao.DaoFactory;
+import edu.ijse.layered.dao.custom.CustomerDao;
 import edu.ijse.layered.dto.CustomerDto;
 import edu.ijse.layered.entity.CustomerEntity;
 import edu.ijse.layered.service.custom.CustomerService;
@@ -14,6 +16,8 @@ import java.util.ArrayList;
  * @author anjan
  */
 public class CustomerServiceImpl implements CustomerService {
+    
+    private CustomerDao customerDao = (CustomerDao) DaoFactory.getInstance().getDao(DaoFactory.DaoTypes.CUSTOMER);
 
     @Override
     public String save(CustomerDto customerDto) throws Exception {
@@ -32,7 +36,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerDto getCustomer(String custId) throws Exception {
-        CustomerEntity customerEntity = null;
+        CustomerEntity customerEntity = customerDao.get(custId);
         if(customerEntity != null){
             return new CustomerDto(customerEntity.getCustId(),
                     customerEntity.getTitle(), customerEntity.getName(),

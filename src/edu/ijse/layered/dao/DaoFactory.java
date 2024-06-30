@@ -4,7 +4,9 @@
  */
 package edu.ijse.layered.dao;
 
+import edu.ijse.layered.dao.custom.impl.CustomerDaoImpl;
 import edu.ijse.layered.dao.custom.impl.ItemDaoImpl;
+import edu.ijse.layered.dao.custom.impl.OrderDaoImpl;
 
 /**
  *
@@ -29,9 +31,9 @@ public class DaoFactory {
             case ITEM:
                 return new ItemDaoImpl();
             case CUSTOMER:
-                return null;
+                return new CustomerDaoImpl();
             case ORDER:
-                return null;
+                return new OrderDaoImpl();
             default:
                 return null;
         }
