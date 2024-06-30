@@ -5,7 +5,7 @@
 package edu.ijse.layered.service.custom.impl;
 
 import edu.ijse.layered.dto.CustomerDto;
-import edu.ijse.layered.eneity.CustomerEntity;
+import edu.ijse.layered.entity.CustomerEntity;
 import edu.ijse.layered.service.custom.CustomerService;
 import java.util.ArrayList;
 

@@ -6,7 +6,7 @@ package edu.ijse.layered.dao.custom.impl;
 
 import edu.ijse.layered.dao.CrudUtil;
 import edu.ijse.layered.dao.custom.ItemDao;
-import edu.ijse.layered.eneity.ItemEntity;
+import edu.ijse.layered.entity.ItemEntity;
 import java.util.ArrayList;
 import java.sql.ResultSet;
 

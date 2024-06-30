@@ -7,7 +7,7 @@ package edu.ijse.layered.service.custom.impl;
 import edu.ijse.layered.dao.DaoFactory;
 import edu.ijse.layered.dao.custom.ItemDao;
 import edu.ijse.layered.dto.ItemDto;
-import edu.ijse.layered.eneity.ItemEntity;
+import edu.ijse.layered.entity.ItemEntity;
 import edu.ijse.layered.service.custom.ItemService;
 import java.util.ArrayList;
 

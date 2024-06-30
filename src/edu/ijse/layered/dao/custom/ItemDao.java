@@ -5,7 +5,7 @@
 package edu.ijse.layered.dao.custom;
 
 import edu.ijse.layered.dao.CrudDao;
-import edu.ijse.layered.eneity.ItemEntity;
+import edu.ijse.layered.entity.ItemEntity;
 
 /**
  *
