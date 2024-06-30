@@ -21,29 +21,49 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public String save(ItemDto dto) throws Exception {
-        ItemEntity entity = new ItemEntity(dto.getCode(), dto.getDescription(),
-                dto.getPack(), dto.getUnitPrice(), dto.getQoh());
+        ItemEntity entity = getItemEntity(dto);
         return itemDao.save(entity);
     }
 
     @Override
     public String update(ItemDto dto) throws Exception {
-        return null;
+        ItemEntity entity = getItemEntity(dto);
+        return itemDao.update(entity);
     }
 
     @Override
     public String delete(String code) throws Exception {
-        return null;
+        return itemDao.delete(code);
     }
 
     @Override
     public ItemDto get(String code) throws Exception {
-        return null;
+        ItemEntity entity = itemDao.get(code);
+        return getItemDto(entity);
     }
 
     @Override
     public ArrayList<ItemDto> getAll() throws Exception {
-        return null;
+        ArrayList<ItemDto> itemDtos = new ArrayList<>();
+        ArrayList<ItemEntity> itemEntitys = itemDao.getAll();
+        for (ItemEntity itemEntity : itemEntitys) {
+            ItemDto dto = getItemDto(itemEntity);
+            itemDtos.add(dto);
+        }
+        return itemDtos;
+    }
+    
+    private ItemDto getItemDto(ItemEntity entity){
+        ItemDto itemDto = new ItemDto(entity.getItemCode(),
+                entity.getDescription(),
+                entity.getPackSize(), entity.getQoh(), entity.getUnitPrice());
+        return itemDto;
+    }
+    
+    private ItemEntity getItemEntity(ItemDto dto){
+         ItemEntity entity = new ItemEntity(dto.getCode(), dto.getDescription(),
+                dto.getPack(), dto.getUnitPrice(), dto.getQoh());
+         return entity;
     }
 
 }

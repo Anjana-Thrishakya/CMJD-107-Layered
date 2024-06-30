@@ -6,15 +6,16 @@ package edu.ijse.layered.view;
 
 import edu.ijse.layered.controller.ItemController;
 import edu.ijse.layered.dto.ItemDto;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
-
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author anjan
  */
 public class ItemView extends javax.swing.JFrame {
-    
+
     private final ItemController ITEM_CONTROLLER;
 
     /**
@@ -23,6 +24,7 @@ public class ItemView extends javax.swing.JFrame {
     public ItemView() throws Exception {
         ITEM_CONTROLLER = new ItemController();
         initComponents();
+        loadTable();
     }
 
     /**
@@ -92,9 +94,19 @@ public class ItemView extends javax.swing.JFrame {
 
         btnUpdate.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         btnUpdate.setText("Update");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
 
         btnDelete.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         btnDelete.setText("Delete");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
         tblItem.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -107,6 +119,11 @@ public class ItemView extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tblItem.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblItemMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblItem);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -194,6 +211,18 @@ public class ItemView extends javax.swing.JFrame {
         saveItem();
     }//GEN-LAST:event_btnSaveActionPerformed
 
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        updateItem();
+    }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        deleteItem();
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void tblItemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblItemMouseClicked
+        searchItem();
+    }//GEN-LAST:event_tblItemMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -248,25 +277,92 @@ public class ItemView extends javax.swing.JFrame {
     private javax.swing.JTextField txtUnitPrice;
     // End of variables declaration//GEN-END:variables
 
-    public void clearForm(){
+    public void clearForm() {
         txtCode.setText("");
         txtDesc.setText("");
         txtPack.setText("");
         txtQoh.setText("");
         txtUnitPrice.setText("");
-   }
+    }
 
     private void saveItem() {
         try {
             ItemDto dto = new ItemDto(txtCode.getText(), txtDesc.getText(), txtPack.getText(),
-                Integer.parseInt(txtQoh.getText()), Double.parseDouble(txtUnitPrice.getText()));
+                    Integer.parseInt(txtQoh.getText()), Double.parseDouble(txtUnitPrice.getText()));
             String resp = ITEM_CONTROLLER.save(dto);
             JOptionPane.showMessageDialog(this, resp);
             clearForm();
+            loadTable();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+
+    }
+
+    private void updateItem() {
+        try {
+            ItemDto dto = new ItemDto(txtCode.getText(), txtDesc.getText(), txtPack.getText(),
+                    Integer.parseInt(txtQoh.getText()), Double.parseDouble(txtUnitPrice.getText()));
+            String resp = ITEM_CONTROLLER.update(dto);
+            JOptionPane.showMessageDialog(this, resp);
+            clearForm();
+            loadTable();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }
+
+    private void deleteItem() {
+        try {
+            String resp = ITEM_CONTROLLER.delete(txtCode.getText());
+            JOptionPane.showMessageDialog(this, resp);
+            clearForm();
+            loadTable();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }
+
+    private void loadTable() {
+        try {
+            String[] columns = {"Code", "Description", "Pack Size", "Unit Price", "QoH"};
+            DefaultTableModel dtm = new DefaultTableModel(columns, 0) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+
+            };
+            tblItem.setModel(dtm);
+
+            ArrayList<ItemDto> itemDtos = ITEM_CONTROLLER.getAll();
+            for (ItemDto itemDto : itemDtos) {
+                Object[] rowData = {itemDto.getCode(), itemDto.getDescription(), itemDto.getPack(), itemDto.getUnitPrice(), itemDto.getQoh()};
+                dtm.addRow(rowData);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }
+
+    private void searchItem() {
+        try {
+            String code = (String) tblItem.getValueAt(tblItem.getSelectedRow(), 0);
+            ItemDto dto = ITEM_CONTROLLER.get(code);
+            if(dto != null){
+                txtCode.setText(dto.getCode());
+                txtDesc.setText(dto.getDescription());
+                txtPack.setText(dto.getPack());
+                txtUnitPrice.setText(dto.getUnitPrice().toString());
+                txtQoh.setText(dto.getQoh().toString());
+            } else {
+                JOptionPane.showMessageDialog(this, "Item not found");
+            }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
         
+        
     }
-    
+
 }
